@@ -22,7 +22,7 @@ app.get('/api/notes', (req, res) => {
   const query = req.query;
   let list = data;
   if (query.searchTerm) {
-    list = list.filter(item => item.title.indexOf(query.searchTerm) !== -1);
+    list = list.filter(item => item.title.includes(query.searchTerm));
   }
   res.json(list);
 });
