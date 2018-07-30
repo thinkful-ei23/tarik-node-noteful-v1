@@ -19,7 +19,12 @@ app.listen(8080, function() {
 });
 
 app.get('/api/notes', (req, res) => {
-  res.json(data);
+  const query = req.query;
+  let list = data;
+  if (query.searchTerm) {
+    list = list.filter(item => item.title.indexOf(query.searchTerm) !== -1);
+  }
+  res.json(list);
 });
 
 app.get('/api/notes/:id', (req, res) => {
