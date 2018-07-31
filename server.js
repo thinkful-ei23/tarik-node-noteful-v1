@@ -7,16 +7,15 @@ const express = require('express');
 
 // Load array of notes
 const data = require('./db/notes');
+
 const app = express();
+
+const { PORT } = require('./config');
 
 // ADD STATIC SERVER HERE
 app.use(express.static('public'));
 
-app.listen(8080, function() {
-  console.log(`Server is listening on ${this.address().port}`);
-}).on('error', err => {
-  console.log(err);
-});
+
 
 app.get('/api/notes', (req, res) => {
   const query = req.query;
@@ -31,4 +30,10 @@ app.get('/api/notes/:id', (req, res) => {
   const id = req.params.id;
   const retNote = data.find(item => item.id === Number(id));
   res.json(retNote);
+});
+
+app.listen(PORT, function() {
+  console.log(`Server is listening on ${this.address().port}`);
+}).on('error', err => {
+  console.log(err);
 });
