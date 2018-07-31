@@ -7,6 +7,8 @@ const express = require('express');
 
 // Load array of notes
 const data = require('./db/notes');
+const simDB = require('./db/simDB');
+const notes = simDB.initialize(data);
 
 const app = express();
 
@@ -32,10 +34,6 @@ app.get('/api/notes/:id', (req, res) => {
   const id = req.params.id;
   const retNote = data.find(item => item.id === Number(id));
   res.json(retNote);
-});
-
-app.get('/boom', (req, res, next) => {
-  throw new Error('Boom!!');
 });
 
 app.use(function (req, res, next) {
