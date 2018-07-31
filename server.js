@@ -21,13 +21,14 @@ app.use(requestLogger);
 
 
 
-app.get('/api/notes', (req, res) => {
-  const query = req.query;
-  let list = data;
-  if (query.searchTerm) {
-    list = list.filter(item => item.title.includes(query.searchTerm));
-  }
-  res.json(list);
+app.get('/api/notes', (req, res, next) => {
+  const { searchTerm } = req.query;
+  notes.filter(searchTerm, function(err, list) {
+    if (err) {
+      return next(err);
+    }
+    return res.json(list);
+  });
 });
 
 app.get('/api/notes/:id', (req, res) => {
