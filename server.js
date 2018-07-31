@@ -15,9 +15,14 @@ const app = express();
 const { requestLogger } = require('./middleware/logger');
 const { PORT } = require('./config');
 
+// Log all requests
+app.use(requestLogger);
+
 // ADD STATIC SERVER HERE
 app.use(express.static('public'));
-app.use(requestLogger);
+
+// Parse Request Body
+app.use(express.json());
 
 
 
@@ -38,6 +43,27 @@ app.get('/api/notes/:id', (req, res, next) => {
       return next(err);
     }
     return res.json(item);
+  });
+});
+
+app.put('/api/notes/:id', (req, res, next) => {
+  const { id } = req.params;
+  const updateObj = {};
+  const updateFields = ['title', 'content'];
+  updateFields.forEach(field => {
+    if (field in req.body) {
+      updateObj[field] = req.body[field];
+    }
+  });
+  notes.update(id, updateObj, function(err, item) {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      return res.json(item);
+    } else {
+      next();
+    }
   });
 });
 
