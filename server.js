@@ -12,11 +12,11 @@ const notes = simDB.initialize(data);
 
 const app = express();
 
-const { requestLogger } = require('./middleware/logger');
+const morgan = require('morgan')
 const { PORT } = require('./config');
 
 // Log all requests
-app.use(requestLogger);
+app.use(morgan('dev'));
 
 // ADD STATIC SERVER HERE
 app.use(express.static('public'));
