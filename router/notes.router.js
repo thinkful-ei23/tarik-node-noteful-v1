@@ -73,7 +73,7 @@ router.post('/notes', (req, res, next) => {
   });
 });
 
-router.delete('/notes/:id', (req, res, next) => {
+router.delete('/notes/:id', (req, res) => {
   const { id } = req.params;
   notes.delete(id, (err) => {
     if (err) {
