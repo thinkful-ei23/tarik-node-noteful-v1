@@ -79,7 +79,7 @@ router.delete('/notes/:id', (req, res) => {
     if (err) {
       res.status(500).json(err);
     } else {
-      res.status(204).json('No content');
+      res.sendStatus(204);
     }
   });
 });
