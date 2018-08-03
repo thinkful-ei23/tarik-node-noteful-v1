@@ -39,7 +39,7 @@ describe('404 handler', function() {
   });
 });
 
-describe('/api/notes', function() {
+describe('Notes Database', function() {
   before(function() {
     return runServer;
   });
@@ -48,7 +48,7 @@ describe('/api/notes', function() {
     return closeServer;
   });
 
-  it('should list notes on GET', function() {
+  it('should return default list of 10 notes as an array', function() {
     return chai.request(app)
       .get('/api/notes')
       .then(function(res) {
@@ -63,16 +63,6 @@ describe('/api/notes', function() {
           );
         });
       });
-  });
-});
-
-describe('/api/notes', function() {
-  before(function() {
-    return runServer;
-  });
-
-  after(function() {
-    return closeServer;
   });
 
   it('should return correct search results for a valid query', function() {
@@ -93,4 +83,16 @@ describe('/api/notes', function() {
         });
       });
   });
-}); 
+
+  it('should return an empty array for an incorrect query', function() {
+    const searchTerm = 'dogs';
+    return chai.request(app)
+      .get(`/api/notes?searchTerm=${searchTerm}`)
+      .then(function(res) {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('array');
+        expect(res.body.length).to.equal(0);
+      });
+  });
+});
