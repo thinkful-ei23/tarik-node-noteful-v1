@@ -87,7 +87,7 @@ const simDB = {
 
 };
 
-const create = function () {
+/*const create = function () {
   return new Promise(simDB.create);
 };
 
@@ -104,16 +104,16 @@ const update = function () {
 };
 
 const remove = function () {
-  return new Promise(simDB.delete);
-};
+  return new Promise(simDB.filter);
+};*/
 
 const simDB_Async = {
   initialize: simDB.initialize,
-  create: create,
-  filter: filter,
-  find: find,
-  update: update,
-  delete: remove
+  create: promisify(simDB.create),
+  filter: promisify(simDB.filter),
+  find: promisify(simDB.find),
+  update: promisify(simDB.update),
+  delete: promisify(simDB.delete)
 };
 
 module.exports = Object.create(simDB_Async);
