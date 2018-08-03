@@ -201,4 +201,18 @@ describe('Notes Database', function() {
         expect(res.body.message).to.equal('Not Found');
       });
   });
+
+  it('should delete an item by id', function() {
+    return chai.request(app)
+      .get('/api/notes')
+      .then(function(res) {
+        return chai
+          .request(app)
+          .delete(`/api/notes/${res.body[0].id}`);
+      })
+      .then(function(res) {
+        expect(res).to.have.status(204);
+      });
+  });
+
 });
