@@ -183,8 +183,22 @@ describe('Notes Database', function() {
       .then(function(res) {
         expect(res).to.have.status(200);
         expect(res).to.be.json;
-        expect(res.body).to.be.a("object");
+        expect(res.body).to.be.a('object');
         expect(res.body).to.deep.equal(updateData);
+      });
+  });
+
+  it('should respond with a 404 for an invalid id', function() {
+    const updateData = {title: 'updated title', content: 'new content'};
+    return chai.request(app)
+      .put('/api/notes/DOESNOTEXIST')
+      .send(updateData)
+      .then(function(res) {
+        expect(res).to.have.status(404);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+        expect(res.body).to.have.all.keys('message');
+        expect(res.body.message).to.equal('Not Found');
       });
   });
 });
