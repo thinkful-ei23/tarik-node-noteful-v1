@@ -71,7 +71,7 @@ app.use(function(err, req, res, next) {
 // Listening for incoming connections
 if (require.main === module) {
   app.listen(PORT, function() {
-    console.log(`Server is listening on ${this.address().port}`);
+    console.log(`Server is listening on ${PORT}`);
   }).on('error', err => {
     console.log(err);
   });
