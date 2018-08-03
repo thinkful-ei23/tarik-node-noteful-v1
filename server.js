@@ -70,11 +70,7 @@ app.use(function(err, req, res, next) {
 
 // Listening for incoming connections
 if (require.main === module) {
-  app.listen(PORT, function() {
-    console.log(`Server is listening on ${PORT}`);
-  }).on('error', err => {
-    console.log(err);
-  });
+  runServer().catch(err => console.error(err));
 }
 
 module.exports = { app, runServer, closeServer }; // Export for testing
