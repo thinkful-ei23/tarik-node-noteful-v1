@@ -138,7 +138,7 @@ describe('Notes Database', function() {
   });
 
   it('should create and return a new item with location header when provided valid data', function() {
-    const newItem = {title: 'New Post', content: 'BLAH BLAH BLAH'}
+    const newItem = {title: 'New Post', content: 'BLAH BLAH BLAH'};
     return chai.request(app)
       .post('/api/notes')
       .send(newItem)
@@ -152,6 +152,20 @@ describe('Notes Database', function() {
           Object.assign(newItem, { id: res.body.id })
         );
         expect(res.headers.location).to.include(res.body.id);
+      });
+  });
+
+  it('should return an object with a message property "Missing title in request body" when missing "title" field', function() {
+    const newItem = {content: 'BLAH BLAH BLAH'};
+    return chai.request(app)
+      .post('/api/notes')
+      .send(newItem)
+      .then(function(res) {
+        expect(res).to.have.status(400);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+        expect(res.body).to.have.all.keys('message', 'error');
+        expect(res.body.message).to.equal('Missing `title` in request body');
       });
   });
 });
