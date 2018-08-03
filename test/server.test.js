@@ -95,4 +95,31 @@ describe('Notes Database', function() {
         expect(res.body.length).to.equal(0);
       });
   });
+
+  it('should return correct note object with id, title and content for a given id', function() {
+    let id;
+    let title;
+    let content;
+    return chai.request(app)
+      .get('/api/notes')
+      .then(function(res) {
+        id = res.body[0].id;
+        title = res.body[0].title;
+        content = res.body[0].content;
+        return chai
+          .request(app)
+          .get(`/api/notes/${id}`);
+      })
+      .then(function(res) {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+        expect(res.body).to.have.all.keys(
+          'id', 'title', 'content'
+        );
+        expect(res.body.id).to.equal(id);
+        expect(res.body.title).to.equal(title);
+        expect(res.body.content).to.equal(content);
+      });
+  }); 
 });
