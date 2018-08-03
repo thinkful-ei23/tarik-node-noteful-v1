@@ -23,6 +23,37 @@ app.use(express.json());
 
 app.use('/api', notesRouter);
 
+let server;
+
+function runServer() {
+  const port = process.env.PORT || 8080;
+  return new Promise((resolve, reject) => {
+    server = app
+      .listen(port, () => {
+        console.log(`Your app is listening on port ${port}`);
+        resolve(server);
+      })
+      .on('error', err => {
+        reject(err);
+      });
+  });
+}
+
+function closeServer() {
+  return new Promise((resolve, reject) => {
+    console.log('Closing server');
+    server.close(err => {
+      if (err) {
+        reject(err);
+        // so we don't also call `resolve()`
+        return;
+      }
+      resolve();
+    });
+  });
+}
+
+
 app.use(function (req, res, next) {
   const err = new Error('Not Found');
   err.status = 404;
@@ -46,4 +77,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = app; // Export for testing
+module.exports = { app, runServer, closeServer }; // Export for testing
