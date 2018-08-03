@@ -136,4 +136,22 @@ describe('Notes Database', function() {
         expect(res.body.message).to.equal('Not Found');
       });
   });
+
+  it('should create and return a new item with location header when provided valid data', function() {
+    const newItem = {title: 'New Post', content: 'BLAH BLAH BLAH'}
+    return chai.request(app)
+      .post('/api/notes')
+      .send(newItem)
+      .then(function(res) {
+        expect(res).to.have.status(201);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+        expect(res.body).to.have.all.keys('id', 'title' , 'content');
+        expect(res.body.id).to.not.equal(null); 
+        expect(res.body).to.deep.equal(
+          Object.assign(newItem, { id: res.body.id })
+        );
+        expect(res.headers.location).to.include(res.body.id);
+      });
+  });
 });
