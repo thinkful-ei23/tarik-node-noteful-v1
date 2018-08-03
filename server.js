@@ -37,8 +37,13 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.listen(PORT, function() {
-  console.log(`Server is listening on ${this.address().port}`);
-}).on('error', err => {
-  console.log(err);
-});
+// Listening for incoming connections
+if (require.main === module) {
+  app.listen(PORT, function() {
+    console.log(`Server is listening on ${this.address().port}`);
+  }).on('error', err => {
+    console.log(err);
+  });
+}
+
+module.exports = app; // Export for testing
