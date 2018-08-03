@@ -26,7 +26,7 @@ app.use('/api', notesRouter);
 let server;
 
 function runServer() {
-  const port = process.env.PORT || 8080;
+  const port = PORT;
   return new Promise((resolve, reject) => {
     server = app
       .listen(port, () => {
